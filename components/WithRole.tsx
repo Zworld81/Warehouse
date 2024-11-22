@@ -1,4 +1,4 @@
-import { Role, useAuth } from '../../myapp4/context/AuthContext';
+import { useAuth, Role } from '../context/AuthContext';
 
 const WithRole = ({ children, role }: { children: any; role: Role }) => {
   const { authState } = useAuth();

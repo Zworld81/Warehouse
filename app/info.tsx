@@ -1,6 +1,6 @@
 import WithRole from '../components/WithRole';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { useAuth, Role } from '../../myapp4/context/AuthContext';
+import { useAuth, Role } from '../context/AuthContext';
 
 const News = () => {
 	return (
