@@ -4,7 +4,7 @@ module.exports = {
   singleQuote: true,
   bracketSameLine: true,
   trailingComma: 'es5',
-
+  endOfLine: 'lf', // اضافه کردن این خط برای تنظیم نوع خط جدید
   plugins: [require.resolve('prettier-plugin-tailwindcss')],
   tailwindAttributes: ['className'],
 };
