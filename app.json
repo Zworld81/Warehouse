@@ -20,7 +20,8 @@
         }
       ],
       "expo-router",
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -38,19 +39,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "supportsRTL": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "warehouse.maa"
+      "package": "warehouse.maa",
+      "allowRtl": true
     },
     "extra": {
       "router": {
         "origin": false
       },
+      "supportsRTL": true,
+      "forcesRTL": true,
       "eas": {
         "projectId": "bae81aee-0523-484d-82fd-a27a2d9c2eb5"
       }

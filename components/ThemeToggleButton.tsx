@@ -36,7 +36,7 @@ const ThemeToggleButton = () => {
   return (
     <TouchableOpacity
       onPress={handleToggle}
-      className="flex-row items-center p-3 bg-gray-200 dark:bg-gray-700 rounded mt-4"
+      className="flex-row items-center p-3 bg-gray-200  rounded mt-4"
     >
       <Ionicons
         name={getIconName()}
@@ -44,7 +44,7 @@ const ThemeToggleButton = () => {
         color={isDarkMode ? 'yellow' : 'black'}
         style={{ marginRight: 8 }}
       />
-      <Text className="text-black dark:text-white">{getButtonText()}</Text>
+      <Text className="text-black ">{getButtonText()}</Text>
     </TouchableOpacity>
   );
 };

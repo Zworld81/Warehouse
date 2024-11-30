@@ -15,7 +15,16 @@ module.exports = {
         Regular: ['YekanBakh-Regular'],
         Bold: ['YekanBakh-Bold'],
       },
+      colors: {
+
+          dark: '#222831', // Very dark gray
+          grayy: '#393E46', // Dark gray
+          yellow: '#FFD369', // Yellow accent
+          light: '#EEEEEE', // Light gray
+
+      },
     },
+    
   },
   darkMode: 'class',
   plugins: [],

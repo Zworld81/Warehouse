@@ -8,8 +8,11 @@ import { ActivityIndicator, View, StyleSheet, StatusBar } from 'react-native';
 import GuideScreen from './guide';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import '../global.css';
-
+import * as Localization from 'expo-localization';
 import { ThemeProvider, ThemeContext } from '../context/ThemeContext';
+import { I18nManager } from "react-native";
+import Toast from 'react-native-toast-message';
+import toastConfig from '../utils/toastConfig';
 
 const RootLayout = () => {
   const { authState } = useAuth();
@@ -23,6 +26,15 @@ const RootLayout = () => {
     'YekanBakh-Bold': require('../assets/fonts/YekanBakh-Bold.ttf'),
     'YekanBakh-Light': require('../assets/fonts/YekanBakh-Light.ttf'),
   });
+
+  useEffect(() => {
+    // اجباری کردن حالت RTL
+    if (!I18nManager.isRTL) {
+      I18nManager.forceRTL(true);
+      I18nManager.allowRTL(true);
+      console.log('RTL فعال شد.');
+    }
+  }, []);
 
   useEffect(() => {
     const checkFirstLaunch = async () => {
@@ -64,27 +76,23 @@ const RootLayout = () => {
     return <GuideScreen onFinish={() => setHasSeenGuide(true)} />;
   }
 
+
+
+
+
   return (
-    <ThemeProvider>
-    <ThemeContext.Consumer>
-      {({ theme, colorScheme }) => {
-        const isDarkMode = theme === 'dark' || (theme === 'system' && colorScheme === 'dark');
-        console.log('isDarkMode:', isDarkMode);
-        return (
-          <View className={`${isDarkMode ? 'dark' : ''} flex-1`}>
-            <StatusBar
-              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-              backgroundColor={isDarkMode ? '#000000' : '#ffffff'}
-            />
-            <Stack>
-              <Stack.Screen name="index" options={{ headerShown: false }} />
-              {/* صفحات دیگر */}
-            </Stack>
-          </View>
-        );
-      }}
-    </ThemeContext.Consumer>
-  </ThemeProvider>
+    <View className="flex-1 bg-dark" style={[styles.container]}>
+      <StatusBar
+        barStyle='light-content'
+        backgroundColor='#000'
+      />
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="protected" options={{ headerShown: false }} />
+      </Stack>
+      <Toast config={toastConfig} />
+    </View>
+
   );
 };
 
@@ -97,6 +105,9 @@ const RootLayoutNav = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#f21010',
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
