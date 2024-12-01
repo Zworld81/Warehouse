@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "entryPoint": "expo-router/entry",
     "scheme": "myapp4",
+    "direction": "rtl",
     "web": {
       "bundler": "metro",
       "output": "static",

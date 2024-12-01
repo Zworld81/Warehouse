@@ -1,17 +1,50 @@
 // app/protected/_layout.tsx
-import React from 'react';
+import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Role, useAuth } from '../../context/AuthContext';
-import { Tabs, usePathname } from 'expo-router';
+import { usePathname } from 'expo-router';
+import { Tabs } from 'expo-router';
 import Header from '../../components/Header';
-import { View } from 'react-native';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { useAuth, Role } from '../../context/AuthContext';
+import { Link } from 'expo-router';
 
 const TabLayout = () => {
   const { authState } = useAuth();
   const pathname = usePathname();
+  const [isSnapPressed, setIsSnapPressed] = useState(false);
+  const sheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ['30%', '60%'], []);
 
-  // تابع برای دریافت عنوان بر اساس مسیر فعلی
+
+  const handlePress = useCallback(() => {
+    if (isSnapPressed) {
+      handleClosePress();
+    } else {
+      handleSnapPress(0); 
+    }
+
+  }, [isSnapPressed]);
+
+  const handleSnapPress = useCallback((index: number) => {
+    sheetRef.current?.snapToIndex(index);
+  }, []);
+
+
+  const handleClosePress = useCallback(() => {
+    sheetRef.current?.close();
+
+  }, []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('Sheet index changed:', index);
+    if (index === -1) {
+      setIsSnapPressed(false); 
+    } else {
+      setIsSnapPressed(true); 
+    }
+  }, []);
+
   const getTitle = (path: string) => {
     switch (path) {
       case '/protected':
@@ -27,6 +60,7 @@ const TabLayout = () => {
         return '';
     }
   };
+
   const getModalContent = (path: string) => {
     switch (path) {
       case '/protected':
@@ -45,14 +79,15 @@ const TabLayout = () => {
 
   const title = getTitle(pathname);
   const modalContent = getModalContent(pathname);
-  
+
   return (
     <GestureHandlerRootView className="flex-1">
-      {/* هدر سفارشی */}
-      <Header title={title} modalContent={modalContent} />
+      {/* Custom Layout */}
+      <View className="flex-1">
+        {/* Header */}
+        <Header title={title} modalContent={modalContent} openSheet={handlePress} />
 
-      {/* تب‌ها */}
-      <Tabs screenOptions={{
+        <Tabs screenOptions={{
         tabBarStyle: {
           backgroundColor: '#222831', // رنگ پس‌زمینه تب‌بار
         },
@@ -111,6 +146,32 @@ const TabLayout = () => {
           redirect={!(authState?.role === Role.ADMIN || authState?.role === Role.USER)}
         />
       </Tabs>
+
+        {/* BottomSheet */}
+        <BottomSheet
+          ref={sheetRef}
+          index={-1}
+          snapPoints={snapPoints}
+          enableDynamicSizing={false}
+          onChange={handleSheetChanges}
+          enablePanDownToClose={true}
+        >
+          <BottomSheetScrollView>
+            <View className="p-4">
+              <Text className="text-xl font-Bold mb-4 text-right">پشتیبانی</Text>
+              <Text className="text-gray-700 font-Regular text-right">
+                اگر مشکلی دارید، می‌توانید با تیم پشتیبانی ما تماس بگیرید
+                {modalContent}
+              </Text>
+              <TouchableOpacity className="mt-4 bg-blue-500 p-3 rounded">
+                <Link href="tel:09301157083">
+                  <Text className="text-white text-center font-Regular">تماس با پشتیبانی</Text>
+                </Link>
+              </TouchableOpacity>
+            </View>
+          </BottomSheetScrollView>
+        </BottomSheet>
+      </View>
     </GestureHandlerRootView>
   );
 };

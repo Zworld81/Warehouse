@@ -13,7 +13,7 @@ import { ThemeProvider, ThemeContext } from '../context/ThemeContext';
 import { I18nManager } from "react-native";
 import Toast from 'react-native-toast-message';
 import toastConfig from '../utils/toastConfig';
-
+import * as Updates from 'expo-updates';
 const RootLayout = () => {
   const { authState } = useAuth();
   const segments = useSegments();
@@ -27,14 +27,8 @@ const RootLayout = () => {
     'YekanBakh-Light': require('../assets/fonts/YekanBakh-Light.ttf'),
   });
 
-  useEffect(() => {
-    // اجباری کردن حالت RTL
-    if (!I18nManager.isRTL) {
-      I18nManager.forceRTL(true);
-      I18nManager.allowRTL(true);
-      console.log('RTL فعال شد.');
-    }
-  }, []);
+  I18nManager.forceRTL(true);
+  I18nManager.allowRTL(true);
 
   useEffect(() => {
     const checkFirstLaunch = async () => {
