@@ -17,10 +17,10 @@ module.exports = {
       },
       colors: {
 
-          dark: '#222831', // Very dark gray
-          grayy: '#393E46', // Dark gray
-          yellow: '#FFD369', // Yellow accent
-          light: '#EEEEEE', // Light gray
+          main: '#DBE2EF', // Very dark gray
+          primary: '#F9F7F7', // Dark gray
+          blu: '#3F72AF', // Yellow accent
+          dark: '#112D4E', // Light gray
 
       },
     },

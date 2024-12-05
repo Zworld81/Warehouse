@@ -22,7 +22,7 @@ const TabLayout = () => {
     if (isSnapPressed) {
       handleClosePress();
     } else {
-      handleSnapPress(0); 
+      handleSnapPress(0);
     }
 
   }, [isSnapPressed]);
@@ -39,9 +39,9 @@ const TabLayout = () => {
   const handleSheetChanges = useCallback((index: number) => {
     console.log('Sheet index changed:', index);
     if (index === -1) {
-      setIsSnapPressed(false); 
+      setIsSnapPressed(false);
     } else {
-      setIsSnapPressed(true); 
+      setIsSnapPressed(true);
     }
   }, []);
 
@@ -88,64 +88,75 @@ const TabLayout = () => {
         <Header title={title} modalContent={modalContent} openSheet={handlePress} />
 
         <Tabs screenOptions={{
-        tabBarStyle: {
-          backgroundColor: '#222831', // رنگ پس‌زمینه تب‌بار
-        },
-        tabBarActiveTintColor: '#FFD369', // رنگ آیکون و متن فعال
-        tabBarInactiveTintColor: '#eeeeee', // رنگ آیکون و متن غیرفعال
-      }}>
-        {/* Home Tab */}
-        <Tabs.Screen
-          name="index"
-          options={{
-            headerShown: false,
-            tabBarLabel: 'Home',
-            tabBarIcon: ({ size, color }) => (
-              <Ionicons name="home-outline" size={size} color={color} />
-            ),
-          }}
-          redirect={authState?.authenticated === null}
-        />
+          tabBarStyle: {
+            backgroundColor: '#DBE2EF', // رنگ پس‌زمینه تب‌بار
+          },
+          tabBarActiveTintColor: '#3F72AF', // رنگ آیکون و متن فعال
+          tabBarInactiveTintColor: '#112D4E', // رنگ آیکون و متن غیرفعال
+        }}>
+          {/* Home Tab */}
+          <Tabs.Screen
+            name="index"
+            options={{
+              headerShown: false,
+              tabBarLabel: 'Home',
+              tabBarIcon: ({ size, color }) => (
+                <Ionicons name="home-outline" size={size} color={color} />
+              ),
+            }}
+            redirect={authState?.authenticated === null}
+          />
 
-        {/* News Tab */}
-        <Tabs.Screen
-          name="news"
-          options={{
-            headerShown: false,
-            tabBarLabel: 'News',
-            tabBarIcon: ({ size, color }) => (
-              <Ionicons name="newspaper-outline" size={size} color={color} />
-            ),
-          }}
-          redirect={authState?.role !== Role.USER}
-        />
+          {/* News Tab */}
+          <Tabs.Screen
+            name="news"
+            options={{
+              headerShown: false,
+              tabBarLabel: 'News',
+              tabBarIcon: ({ size, color }) => (
+                <Ionicons name="newspaper-outline" size={size} color={color} />
+              ),
+            }}
+            redirect={authState?.role !== Role.USER}
+          />
 
-        {/* Admin Tab */}
-        <Tabs.Screen
-          name="admin"
-          options={{
-            headerShown: false,
-            tabBarLabel: 'Admin',
-            tabBarIcon: ({ size, color }) => (
-              <Ionicons name="cog-outline" size={size} color={color} />
-            ),
-          }}
-          redirect={authState?.role !== Role.ADMIN}
-        />
+          {/* Admin Tab */}
+          <Tabs.Screen
+            name="admin"
+            options={{
+              headerShown: false,
+              tabBarLabel: 'Admin',
+              tabBarIcon: ({ size, color }) => (
+                <Ionicons name="cog-outline" size={size} color={color} />
+              ),
+            }}
+            redirect={authState?.role !== Role.ADMIN}
+          />
 
-        {/* Test Tab */}
-        <Tabs.Screen
-          name="test"
-          options={{
-            headerShown: false,
-            tabBarLabel: 'Test',
-            tabBarIcon: ({ size, color }) => (
-              <Ionicons name="cog-outline" size={size} color={color} />
-            ),
-          }}
-          redirect={!(authState?.role === Role.ADMIN || authState?.role === Role.USER)}
-        />
-      </Tabs>
+          {/* Test Tab */}
+          <Tabs.Screen
+            name="test"
+            options={{
+              headerShown: false,
+              tabBarLabel: 'Test',
+              tabBarIcon: ({ size, color }) => (
+                <Ionicons name="cog-outline" size={size} color={color} />
+              ),
+            }}
+            redirect={!(authState?.role === Role.ADMIN || authState?.role === Role.USER)}
+          />
+          <Tabs.Screen
+            name="scan"
+            options={{
+              headerShown: false,
+              tabBarLabel: 'scan',
+              tabBarIcon: ({ size, color }) => (
+                <Ionicons name="cog-outline" size={size} color={color} />
+              ),
+            }}
+            redirect={!(authState?.role === Role.ADMIN || authState?.role === Role.USER)}
+          />
+        </Tabs>
 
         {/* BottomSheet */}
         <BottomSheet

@@ -75,7 +75,7 @@ const RootLayout = () => {
 
 
   return (
-    <View className="flex-1 bg-dark" style={[styles.container]}>
+    <View className="flex-1 bg-main" style={[styles.container]}>
       <StatusBar
         barStyle='light-content'
         backgroundColor='#000'
