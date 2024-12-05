@@ -1,8 +1,8 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { useAuth, Role } from '../../context/AuthContext';
+import { useAuth, Role } from '../../../context/AuthContext';
 import { useRouter, Link } from 'expo-router';
-import WithRole from '../../components/WithRole';
-import ThemeToggleButton from '../../components/ThemeToggleButton';
+import WithRole from '../../../components/WithRole';
+import ThemeToggleButton from '../../../components/ThemeToggleButton';
 const Page = () => {
   const { authState, onLogout } = useAuth();
   const router = useRouter();

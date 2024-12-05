@@ -9,7 +9,7 @@ import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useAuth, Role } from '../../context/AuthContext';
 import { Link } from 'expo-router';
-
+import { Stack } from 'expo-router';
 const TabLayout = () => {
   const { authState } = useAuth();
   const pathname = usePathname();
@@ -48,7 +48,7 @@ const TabLayout = () => {
   const getTitle = (path: string) => {
     switch (path) {
       case '/protected':
-      case '/protected/index':
+      case '/protected/home':
         return 'خانه';
       case '/protected/news':
         return 'Newsfeed';
@@ -64,7 +64,7 @@ const TabLayout = () => {
   const getModalContent = (path: string) => {
     switch (path) {
       case '/protected':
-      case '/protected/index':
+      case '/protected/home':
         return 'محتوای صفحه خانه';
       case '/protected/news':
         return 'محتوای اخبار';
@@ -87,7 +87,7 @@ const TabLayout = () => {
         {/* Header */}
         <Header title={title} modalContent={modalContent} openSheet={handlePress} />
 
-        <Tabs screenOptions={{
+        <Tabs initialRouteName="home" screenOptions={{
           tabBarStyle: {
             backgroundColor: '#DBE2EF', // رنگ پس‌زمینه تب‌بار
           },
@@ -96,7 +96,7 @@ const TabLayout = () => {
         }}>
           {/* Home Tab */}
           <Tabs.Screen
-            name="index"
+            name="home"
             options={{
               headerShown: false,
               tabBarLabel: 'Home',
@@ -126,6 +126,7 @@ const TabLayout = () => {
             options={{
               headerShown: false,
               tabBarLabel: 'Admin',
+              
               tabBarIcon: ({ size, color }) => (
                 <Ionicons name="cog-outline" size={size} color={color} />
               ),

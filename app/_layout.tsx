@@ -54,7 +54,7 @@ const RootLayout = () => {
     if (!authState.authenticated && inAuthGroup) {
       router.replace('/');
     } else if (authState.authenticated && !inAuthGroup) {
-      router.replace('/protected');
+      router.replace('./protected');
     }
   }, [authState, segments, router, isLoading, hasSeenGuide]);
 

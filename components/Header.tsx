@@ -1,8 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Link } from 'expo-router';
 
 type HeaderProps = {
     title: string;
@@ -10,7 +8,7 @@ type HeaderProps = {
     openSheet: () => void;  // تابع برای باز کردن bottom sheet
 };
 
-const Header: React.FC<HeaderProps> = ({ title, modalContent, openSheet }) => {
+const Header: React.FC<HeaderProps> = ({ title, openSheet }) => {
     return (
 
             <View className="p-4 flex justify-between items-center flex-row bg-main ">

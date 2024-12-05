@@ -20,7 +20,7 @@ const App = () => {
   const router = useRouter();
 
   const handlePress = () => {
-    router.push('./protected/lost');
+    router.push('./protected/home/lost');
   };
 
 
@@ -29,16 +29,16 @@ const App = () => {
   // داده‌ها با لینک تصاویر
   const data: Item[] = useMemo(
     () => [
-      { title: 'میز زرد', image: require('../../assets/3dcube.png'), description: 'شرکت فراهوش-سعید سورانی' },
-      { title: 'صندلی مشکی', image: require('../../assets/emoji-sad.png'), description: 'شرکت صنایع فولاد-محمد رضایی' },
-      { title: 'وسیله تست-2', image: require('../../assets/emoji-normal.png'), description: 'شرکت صنایع فولاد-محمد علی' },
-      { title: 'میز زرد 2', image: require('../../assets/3dcube.png'), description: 'شرکت فراهوش-سعید سورانی' },
-      { title: 'صندلی مشکی 2', image: require('../../assets/emoji-sad.png'), description: 'شرکت صنایع فولاد-محمد رضایی' },
-      { title: 'وسیله تست-2 3', image: require('../../assets/emoji-normal.png'), description: 'شرکت صنایع فولاد-محمد علی' },
-      { title: 'وسیله تست-32', image: require('../../assets/emoji-normal.png'), description: 'شرکت صنایع فولاد-محمد علی' },
-      { title: 'میز زرد 32', image: require('../../assets/3dcube.png'), description: 'شرکت فراهوش-سعید سورانی' },
-      { title: 'صندلی مشکی 32', image: require('../../assets/emoji-sad.png'), description: 'شرکت صنایع فولاد-محمد رضایی' },
-      { title: 'وسیله تست-32 3', image: require('../../assets/emoji-normal.png'), description: 'شرکت صنایع فولاد-محمد علی' },
+      { title: 'میز زرد', image: require('../../../assets/3dcube.png'), description: 'شرکت فراهوش-سعید سورانی' },
+      { title: 'صندلی مشکی', image: require('../../../assets/emoji-sad.png'), description: 'شرکت صنایع فولاد-محمد رضایی' },
+      { title: 'وسیله تست-2', image: require('../../../assets/emoji-normal.png'), description: 'شرکت صنایع فولاد-محمد علی' },
+      { title: 'میز زرد 2', image: require('../../../assets/3dcube.png'), description: 'شرکت فراهوش-سعید سورانی' },
+      { title: 'صندلی مشکی 2', image: require('../../../assets/emoji-sad.png'), description: 'شرکت صنایع فولاد-محمد رضایی' },
+      { title: 'وسیله تست-2 3', image: require('../../../assets/emoji-normal.png'), description: 'شرکت صنایع فولاد-محمد علی' },
+      { title: 'وسیله تست-32', image: require('../../../assets/emoji-normal.png'), description: 'شرکت صنایع فولاد-محمد علی' },
+      { title: 'میز زرد 32', image: require('../../../assets/3dcube.png'), description: 'شرکت فراهوش-سعید سورانی' },
+      { title: 'صندلی مشکی 32', image: require('../../../assets/emoji-sad.png'), description: 'شرکت صنایع فولاد-محمد رضایی' },
+      { title: 'وسیله تست-32 3', image: require('../../../assets/emoji-normal.png'), description: 'شرکت صنایع فولاد-محمد علی' },
     ],
     []
   );
@@ -77,16 +77,16 @@ const App = () => {
       <View className="flex justify-center items-center bg-primary border-b-blu border-b-2 rounded-lg p-5 w-full">
         <View className="flex flex-row-reverse justify-between w-full gap-5 mb-5">
           <Text className="font-Bold ">تعداد کل اموال</Text>
-          <Image source={require('../../assets/Group-2.png')} style={{ width: 30, height: 18 }} contentFit="cover" transition={1000} />
+          <Image source={require('../../../assets/Group-2.png')} style={{ width: 30, height: 18 }} contentFit="cover" transition={1000} />
         </View>
         <Text className="font-Regular ">بدون دسته بندی : 72</Text>
       </View>
-      <Link href="/protected/lost"><View className="flex flex-row justify-between items-center bg-primary border-r-blu border-r-2 rounded-lg p-5 w-full mt-28">
-        <Image source={require('../../assets/Scan.png')} style={{ width: 36, height: 36 }}   />
+      <Link href="./protected/home/lost" className="mt-20"><View className="flex flex-row justify-between items-center bg-primary border-r-blu border-r-2 rounded-lg p-5 w-full ">
+        <Image source={require('../../../assets/Scan.png')} style={{ width: 36, height: 36 }}   />
         <Text className="font-Bold ">اسکن شده</Text>
       </View></Link>
-      <TouchableOpacity  onPress={handlePress} className="flex flex-row justify-between items-center bg-primary border-r-blu border-r-2 rounded-lg p-5 w-full mt-5 shadow-lg">
-        <Image source={require('../../assets/lost.png')} style={{ width: 36, height: 36 }}   />
+      <TouchableOpacity  onPress={handlePress} className="flex flex-row justify-between items-center bg-primary border-r-blu border-r-2 rounded-lg p-5 w-full mt-5 boxshadow">
+        <Image source={require('../../../assets/lost.png')} style={{ width: 36, height: 36 }}   />
         <Text className="font-Bold">مفقود شده</Text>
       </TouchableOpacity >
       <BottomSheet
