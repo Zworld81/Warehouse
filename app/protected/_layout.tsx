@@ -1,65 +1,68 @@
 // app/protected/_layout.tsx
-import React, { useState, useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { usePathname } from 'expo-router';
 import { Tabs } from 'expo-router';
 import Header from '../../components/Header';
-import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { View, Text, TouchableOpacity } from 'react-native';
+import {
+  BottomSheetModal,
+  BottomSheetView,
+  BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useAuth, Role } from '../../context/AuthContext';
 import { Link } from 'expo-router';
-import { Stack } from 'expo-router';
+
 const TabLayout = () => {
   const { authState } = useAuth();
   const pathname = usePathname();
-  const [isSnapPressed, setIsSnapPressed] = useState(false);
-  const sheetRef = useRef<BottomSheet>(null);
+
+
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['30%', '60%'], []);
 
 
-  const handlePress = useCallback(() => {
-    if (isSnapPressed) {
-      handleClosePress();
-    } else {
-      handleSnapPress(0);
-    }
-
-  }, [isSnapPressed]);
-
-  const handleSnapPress = useCallback((index: number) => {
-    sheetRef.current?.snapToIndex(index);
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
   }, []);
 
 
-  const handleClosePress = useCallback(() => {
-    sheetRef.current?.close();
-
+  const handleDismissModal = useCallback(() => {
+    bottomSheetModalRef.current?.dismiss();
   }, []);
+
+
   const handleSheetChanges = useCallback((index: number) => {
     console.log('Sheet index changed:', index);
-    if (index === -1) {
-      setIsSnapPressed(false);
-    } else {
-      setIsSnapPressed(true);
-    }
+
   }, []);
 
+  // دریافت عنوان بر اساس مسیر
   const getTitle = (path: string) => {
     switch (path) {
       case '/protected':
       case '/protected/home':
         return 'خانه';
+      case '/protected/home/lost':
+        return 'مفقود شده';
+      case '/protected/home/scanned':
+        return 'اسکن شده';
       case '/protected/news':
         return 'Newsfeed';
-      case '/protected/admin':
-        return 'Admin Area';
+      case '/protected/deparetman':
+        return 'دپارتمان';
+      case '/protected/deparetman/discrepancies':
+        return 'لیست مغایرت ها';
+      case '/protected/deparetman/${id}':
+        return 'لیست مغایرت ها';
       case '/protected/test':
         return 'Test Area';
       default:
         return '';
     }
   };
+
 
   const getModalContent = (path: string) => {
     switch (path) {
@@ -68,8 +71,8 @@ const TabLayout = () => {
         return 'محتوای صفحه خانه';
       case '/protected/news':
         return 'محتوای اخبار';
-      case '/protected/admin':
-        return 'محتوای صفحه ادمین';
+      case '/protected/deparetman':
+        return 'محتوای صفحه دپارتمان';
       case '/protected/test':
         return 'محتوای صفحه تست';
       default:
@@ -81,111 +84,217 @@ const TabLayout = () => {
   const modalContent = getModalContent(pathname);
 
   return (
-    <GestureHandlerRootView className="flex-1">
-      {/* Custom Layout */}
-      <View className="flex-1">
-        {/* Header */}
-        <Header title={title} modalContent={modalContent} openSheet={handlePress} />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      {/* استفاده از BottomSheetModalProvider */}
+      <BottomSheetModalProvider>
+        {/* Custom Layout */}
+        <View style={{ flex: 1 }}>
+          {/* Header */}
+          <Header title={title} modalContent={modalContent} openSheet={handlePresentModalPress} />
 
-        <Tabs initialRouteName="home" screenOptions={{
-          tabBarStyle: {
-            backgroundColor: '#DBE2EF', // رنگ پس‌زمینه تب‌بار
-          },
-          tabBarActiveTintColor: '#3F72AF', // رنگ آیکون و متن فعال
-          tabBarInactiveTintColor: '#112D4E', // رنگ آیکون و متن غیرفعال
-        }}>
-          {/* Home Tab */}
-          <Tabs.Screen
-            name="home"
-            options={{
-              headerShown: false,
-              tabBarLabel: 'Home',
-              tabBarIcon: ({ size, color }) => (
-                <Ionicons name="home-outline" size={size} color={color} />
-              ),
+          <Tabs
+            initialRouteName="home"
+            screenOptions={{
+              tabBarStyle: {
+                height: 60,
+                backgroundColor: '#DBE2EF',
+                borderTopLeftRadius: 20, // گرد کردن گوشه بالا سمت چپ
+                borderTopRightRadius: 20,
+                shadowColor: '#112D4E',
+                shadowOffset: { width: 0, height: 5 },
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                elevation: 5,
+                marginHorizontal: 0, // فاصله افقی (معادل marginX)
+                marginVertical: 0,
+              },
+              tabBarIconStyle: {
+                marginTop: 10, // فاصله دادن آیکون‌ها از بالا
+              },
+              tabBarActiveTintColor: '#3F72AF',
+              tabBarInactiveTintColor: '#112D4E',
+              tabBarShowLabel: false, // نمایش برچسب‌ها غیرفعال
             }}
-            redirect={authState?.authenticated === null}
-          />
+          >
 
-          {/* News Tab */}
-          <Tabs.Screen
-            name="news"
-            options={{
-              headerShown: false,
-              tabBarLabel: 'News',
-              tabBarIcon: ({ size, color }) => (
-                <Ionicons name="newspaper-outline" size={size} color={color} />
-              ),
-            }}
-            redirect={authState?.role !== Role.USER}
-          />
 
-          {/* Admin Tab */}
-          <Tabs.Screen
-            name="admin"
-            options={{
-              headerShown: false,
-              tabBarLabel: 'Admin',
-              
-              tabBarIcon: ({ size, color }) => (
-                <Ionicons name="cog-outline" size={size} color={color} />
-              ),
-            }}
-            redirect={authState?.role !== Role.ADMIN}
-          />
 
-          {/* Test Tab */}
-          <Tabs.Screen
-            name="test"
-            options={{
-              headerShown: false,
-              tabBarLabel: 'Test',
-              tabBarIcon: ({ size, color }) => (
-                <Ionicons name="cog-outline" size={size} color={color} />
-              ),
-            }}
-            redirect={!(authState?.role === Role.ADMIN || authState?.role === Role.USER)}
-          />
-          <Tabs.Screen
-            name="scan"
-            options={{
-              headerShown: false,
-              tabBarLabel: 'scan',
-              tabBarIcon: ({ size, color }) => (
-                <Ionicons name="cog-outline" size={size} color={color} />
-              ),
-            }}
-            redirect={!(authState?.role === Role.ADMIN || authState?.role === Role.USER)}
-          />
-        </Tabs>
+            {/* Home Tab */}
+            <Tabs.Screen
+              name="home"
+              options={{
+                headerShown: false,
+                tabBarIcon: ({ color, size, focused }) => (
+                  <View style={styles.iconWrapper}>
+                    <Ionicons name="home" size={size} color={color} />
+                    {focused && (
+                      <View style={styles.neonUnderline} />
+                    )}
+                  </View>
+                ),
+              }}
+              redirect={authState?.authenticated === null}
+            />
 
-        {/* BottomSheet */}
-        <BottomSheet
-          ref={sheetRef}
-          index={-1}
-          snapPoints={snapPoints}
-          enableDynamicSizing={false}
-          onChange={handleSheetChanges}
-          enablePanDownToClose={true}
-        >
-          <BottomSheetScrollView>
-            <View className="p-4">
-              <Text className="text-xl font-Bold mb-4 text-right">پشتیبانی</Text>
-              <Text className="text-gray-700 font-Regular text-right">
-                اگر مشکلی دارید، می‌توانید با تیم پشتیبانی ما تماس بگیرید
+            {/* News Tab */}
+            <Tabs.Screen
+              name="news"
+              options={{
+                headerShown: false,
+                tabBarIcon: ({ color, size, focused }) => (
+                  <View style={styles.iconWrapper}>
+                    <Ionicons name="newspaper" size={size} color={color} />
+                    {focused && (
+                      <View style={styles.neonUnderline} />
+                    )}
+                  </View>
+                ),
+              }}
+              redirect={authState?.role !== Role.USER}
+            />
+
+            {/* Admin Tab */}
+            <Tabs.Screen
+              name="deparetman"
+              options={{
+                headerShown: false,
+                tabBarIcon: ({ color, size, focused }) => (
+                  <View style={styles.iconWrapper}>
+                    <Ionicons name="business" size={size} color={color} />
+                    {focused && (
+                      <View style={styles.neonUnderline} />
+                    )}
+                  </View>
+                ),
+              }}
+              redirect={authState?.role !== Role.ADMIN}
+            />
+
+            {/* Test Tab */}
+            <Tabs.Screen
+              name="test"
+              options={{
+                headerShown: false,
+                tabBarIcon: ({ color, size, focused }) => (
+                  <View style={styles.iconWrapper}>
+                    <Ionicons name="search" size={size} color={color} />
+                    {focused && (
+                      <View style={styles.neonUnderline} />
+                    )}
+                  </View>
+                ),
+              }}
+              redirect={!(authState?.role === Role.ADMIN || authState?.role === Role.USER)}
+            />
+
+            {/* Scan Tab */}
+            <Tabs.Screen
+              name="scan"
+              options={{
+                headerShown: false,
+                tabBarIcon: ({ color, size, focused }) => (
+                  <View style={styles.iconWrapper}>
+                    <Ionicons name="cog" size={size} color={color} />
+                    {focused && (
+                      <View style={styles.neonUnderline} />
+                    )}
+                  </View>
+                ),
+              }}
+              redirect={!(authState?.role === Role.ADMIN || authState?.role === Role.USER)}
+            />
+          </Tabs>
+
+          {/* BottomSheetModal */}
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={0} // شروع با اولین نقطه snap
+
+            onChange={handleSheetChanges}
+            enablePanDownToClose={true}
+            style={styles.bottomSheet}
+          >
+            <BottomSheetView style={styles.contentContainer}>
+              <View style={styles.modalHeader}>
+                <TouchableOpacity onPress={handleDismissModal}>
+                  <Ionicons name="close" size={24} color="black" />
+                </TouchableOpacity>
+                <Text style={styles.modalTitle}>پشتیبانی</Text>
+              </View>
+              <Text style={styles.modalContent}>
+                اگر مشکلی دارید، می‌توانید با تیم پشتیبانی ما تماس بگیرید:
+                {'\n\n'}
                 {modalContent}
               </Text>
-              <TouchableOpacity className="mt-4 bg-blue-500 p-3 rounded">
+              <TouchableOpacity style={styles.supportButton}>
                 <Link href="tel:09301157083">
-                  <Text className="text-white text-center font-Regular">تماس با پشتیبانی</Text>
+                  <Text style={styles.supportButtonText}>تماس با پشتیبانی</Text>
                 </Link>
               </TouchableOpacity>
-            </View>
-          </BottomSheetScrollView>
-        </BottomSheet>
-      </View>
+            </BottomSheetView>
+          </BottomSheetModal>
+        </View>
+      </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
 };
+
+const styles = StyleSheet.create({
+  bottomSheet: {
+    // می‌توانید استایل‌های اضافی برای BottomSheetModal اضافه کنید
+  },
+  contentContainer: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#fff',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontFamily: 'YekanBakh-Bold',
+
+  },
+  modalContent: {
+    fontSize: 16,
+    fontFamily: 'YekanBakh-Regular',
+    color: '#112D4E',
+    textAlign: 'right',
+  },
+  supportButton: {
+    marginTop: 24,
+    backgroundColor: '#3F72AF',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  supportButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontFamily: 'YekanBakh-Regular',
+  },
+  iconWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  neonUnderline: {
+    position: 'absolute',
+    bottom: -20, // زیر آیکون قرار گیرد
+    width: 50, // عرض خط
+    height: 6, // ضخامت خط
+    backgroundColor: '#3F72AF', // رنگ نئونی
+    borderRadius: 5, // گوشه‌های گرد
+    shadowColor: '#3F72AF',
+    shadowOpacity: 0.6,
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 10,
+    elevation: 5, // برای اندروید
+  },
+});
 
 export default TabLayout;

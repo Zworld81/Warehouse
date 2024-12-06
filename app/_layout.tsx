@@ -13,7 +13,8 @@ import { ThemeProvider, ThemeContext } from '../context/ThemeContext';
 import { I18nManager } from "react-native";
 import Toast from 'react-native-toast-message';
 import toastConfig from '../utils/toastConfig';
-import * as Updates from 'expo-updates';
+
+import * as NavigationBar from 'expo-navigation-bar';
 const RootLayout = () => {
   const { authState } = useAuth();
   const segments = useSegments();
@@ -27,8 +28,14 @@ const RootLayout = () => {
     'YekanBakh-Light': require('../assets/fonts/YekanBakh-Light.ttf'),
   });
 
-  I18nManager.forceRTL(true);
-  I18nManager.allowRTL(true);
+  useEffect(() => {
+
+    NavigationBar.setBackgroundColorAsync('transparent');
+    NavigationBar.setBehaviorAsync('overlay-swipe');
+  }, []);
+
+  // I18nManager.forceRTL(true);
+  // I18nManager.allowRTL(true);
 
   useEffect(() => {
     const checkFirstLaunch = async () => {
@@ -77,8 +84,8 @@ const RootLayout = () => {
   return (
     <View className="flex-1 bg-main" style={[styles.container]}>
       <StatusBar
-        barStyle='light-content'
-        backgroundColor='#000'
+        barStyle='dark-content'
+        backgroundColor='#DBE2EF'
       />
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />

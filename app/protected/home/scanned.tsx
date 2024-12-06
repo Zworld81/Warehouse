@@ -67,7 +67,7 @@ const MissingItemsScreen = () => {
       return (
         <TouchableOpacity
           onPress={() => handlePress(item)}
-          className="flex flex-row-reverse gap-5 items-center justify-start border-r-blu border-r-4 rounded-lg p-4 w-full mt-5 shadow-lg bg-gray-200"
+          className="flex flex-row-reverse gap-5 items-center justify-start border-r-blu border-r-4 rounded-lg p-4 w-full mt-5 shadow-lg bg-main"
         >
           <View className="rounded-full p-4 justify-center items-center"  style={{ backgroundColor: item.color }} >
             <Image source={item.image} className="w-9 h-9" />

@@ -5,7 +5,6 @@
     "version": "1.0.0",
     "entryPoint": "expo-router/entry",
     "scheme": "myapp4",
-    "direction": "rtl",
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -52,8 +51,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "supportsRTL": true
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
@@ -61,14 +59,15 @@
         "backgroundColor": "#ffffff"
       },
       "package": "warehouse.maa",
-      "allowRtl": true
+      "permissions": [
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT"
+      ]
     },
     "extra": {
       "router": {
         "origin": false
       },
-      "supportsRTL": true,
-      "forcesRTL": true,
       "eas": {
         "projectId": "bae81aee-0523-484d-82fd-a27a2d9c2eb5"
       }

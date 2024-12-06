@@ -14,13 +14,11 @@ interface Item {
 }
 
 const App = () => {
-  I18nManager.allowRTL(true);
-  I18nManager.forceRTL(true);
 
   const router = useRouter();
 
   const handlePress = () => {
-    router.push('./protected/home/lost');
+    router.push('./home/lost');
   };
 
 
@@ -81,7 +79,7 @@ const App = () => {
         </View>
         <Text className="font-Regular ">بدون دسته بندی : 72</Text>
       </View>
-      <Link href="./protected/home/lost" className="mt-20"><View className="flex flex-row justify-between items-center bg-primary border-r-blu border-r-2 rounded-lg p-5 w-full ">
+      <Link href="./home/scanned" className="mt-20"><View className="flex flex-row justify-between items-center bg-primary border-r-blu border-r-2 rounded-lg p-5 w-full ">
         <Image source={require('../../../assets/Scan.png')} style={{ width: 36, height: 36 }}   />
         <Text className="font-Bold ">اسکن شده</Text>
       </View></Link>
